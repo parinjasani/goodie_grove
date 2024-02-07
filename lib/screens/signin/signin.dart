@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../Firebase/firebase_singleton.dart';
-import 'forget_password_page.dart';
-
-
+import '../../Firebase/firebase_singleton.dart';
+import '../forgetpassword/forget_password_page.dart';
 
 class Signin_Page extends StatelessWidget {
   const Signin_Page({Key? key}) : super(key: key);

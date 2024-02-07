@@ -1,7 +1,8 @@
+import 'package:finalyeraproject/routes/approutes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'signin_page/signin.dart';
+import 'screens/signin/signin.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,9 +13,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Material App',
-      home: Signin_Page(),
+     // home: Signin_Page(),
+      initialRoute: Approutes.signinscreen,
+      onGenerateRoute:Approutes.generateRoute,
     );
   }
 }
