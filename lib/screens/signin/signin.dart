@@ -76,8 +76,8 @@ class Signin_Page extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
-                  onTap: () {
-                    UserCredential credential =  service.login(_emailController.text.toString(), _passwordController.text.toString()) as UserCredential;
+                  onTap: () async {
+                    UserCredential credential =  await service.login(_emailController.text.toString(), _passwordController.text.toString());
                    if(credential.user != null){
                      print("Login made successfully");
                    } else{
