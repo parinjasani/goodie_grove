@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "158237292727",
+    "project_id": "goodie-grove-f75a5",
+    "storage_bucket": "goodie-grove-f75a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158237292727:android:1a8309937d26a3dcf27532",
+        "android_client_info": {
+          "package_name": "com.example.finalyeraproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwIyKPHkNzVefPbTHgFWxgcRSrbZOn7zw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
