@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/forgetpassword/forget_password_page.dart';
+import '../screens/homescreen/homescreen.dart';
 import '../screens/signin/signin.dart';
 
 class Approutes {
@@ -10,6 +11,7 @@ class Approutes {
 
   //static const signupscreen = "/signupscreen";
   static const forgetpasswordscreen = "/forgetpasswordscreen";
+  static const homescreen = "/homescreen";
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     var arguments = settings.arguments;
@@ -20,6 +22,10 @@ class Approutes {
         );
       case forgetpasswordscreen:
         return MaterialPageRoute(builder: (context) => Forget_Password_Page());
+      case homescreen:
+        return MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        );
     }
   }
 }

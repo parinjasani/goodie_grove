@@ -12,10 +12,14 @@ class FirebaseSingleton{
 
   FirebaseSingleton._internal();
 
-
+  final FirebaseAuth mAuth = FirebaseAuth.instance;
   Future<dynamic> login(String email,String password) async {
   UserCredential credential =  await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
   return credential;
+  }
+
+  Future<void> logout() async {
+    return await mAuth.signOut();
   }
 
    Future<dynamic> forgetmethod(String email) async {

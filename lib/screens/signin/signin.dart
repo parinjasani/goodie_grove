@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../Firebase/firebase_singleton.dart';
-import '../forgetpassword/forget_password_page.dart';
+import '../../routes/approutes.dart';
+
 
 class Signin_Page extends StatelessWidget {
   const Signin_Page({Key? key}) : super(key: key);
@@ -80,6 +81,8 @@ class Signin_Page extends StatelessWidget {
                     UserCredential credential =  await service.login(_emailController.text.toString(), _passwordController.text.toString());
                    if(credential.user != null){
                      print("Login made successfully");
+                     Navigator.pushNamedAndRemoveUntil(context, Approutes.homescreen, (route) => false);
+
                    } else{
                      print("Invaild login");
                    }
@@ -101,7 +104,7 @@ class Signin_Page extends StatelessWidget {
                   Text('Forget password?', style: TextStyle(fontWeight: FontWeight.bold),),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Forget_Password_Page(),));
+                      Navigator.pushNamed(context, Approutes.forgetpasswordscreen);
                     },
                       child: Text('   Get Password', style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)),
                 ],
