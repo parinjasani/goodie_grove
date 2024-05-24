@@ -17,7 +17,7 @@ class HomeScreenDrawer extends StatelessWidget {
         children: [
           builduseraccountHeader(),
           ListTile(
-            title: Text("Manage category"),
+            title: Text("My Profile"),
             leading: Icon(Icons.add_box_outlined),
             //navigate to categorylist screen
             onTap: () {
@@ -28,7 +28,21 @@ class HomeScreenDrawer extends StatelessWidget {
             onTap: () {
              // Navigator.pushNamed(context, Approutes.);
             },
-            title: Text("Manage Product"),
+            title: Text("Credit & History"),
+            leading: Icon(Icons.add_box_outlined),
+          ),
+          ListTile(
+            onTap: () {
+              // Navigator.pushNamed(context, Approutes.);
+            },
+            title: Text("Settings"),
+            leading: Icon(Icons.add_box_outlined),
+          ),
+          ListTile(
+            onTap: () {
+              // Navigator.pushNamed(context, Approutes.);
+            },
+            title: Text("Help & Support"),
             leading: Icon(Icons.add_box_outlined),
           ),
           Divider(
