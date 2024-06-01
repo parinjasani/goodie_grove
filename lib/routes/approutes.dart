@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../screens/forgetpassword/forget_password_page.dart';
 import '../screens/homescreen/homescreen.dart';
 import '../screens/signin/signin.dart';
+import '../screens/splashscreen/splashscreen.dart';
 
 class Approutes {
-  // static const splashscreen = '/';
+  static const splashscreen = '/';
+
   // static const onboradingscreen = '/onbording';
   static const signinscreen = "/signinscreen";
 
@@ -16,6 +18,8 @@ class Approutes {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     var arguments = settings.arguments;
     switch (settings.name) {
+      case splashscreen:
+        return MaterialPageRoute(builder: (context) => SplashScreen());
       case signinscreen:
         return MaterialPageRoute(
           builder: (context) => Signin_Page(),

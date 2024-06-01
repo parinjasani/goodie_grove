@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Material App',
      // home: Signin_Page(),
-      initialRoute: Approutes.signinscreen,
+      initialRoute: Approutes.splashscreen,
       onGenerateRoute:Approutes.generateRoute,
     );
   }

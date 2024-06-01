@@ -5,14 +5,23 @@ import '../../routes/approutes.dart';
 
 
 class Signin_Page extends StatelessWidget {
-  const Signin_Page({Key? key}) : super(key: key);
+   Signin_Page({Key? key}) : super(key: key);
 
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  FirebaseSingleton service = FirebaseSingleton();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _emailController.dispose();
+    _passwordController.dispose();
+
+  }
   @override
   Widget build(BuildContext context) {
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
 
-    FirebaseSingleton service = FirebaseSingleton();
 
     return SafeArea(
       child: Scaffold(
@@ -79,13 +88,22 @@ class Signin_Page extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () async {
                     UserCredential credential =  await service.login(_emailController.text.toString(), _passwordController.text.toString());
-                   if(credential.user != null){
-                     print("Login made successfully");
-                     Navigator.pushNamedAndRemoveUntil(context, Approutes.homescreen, (route) => false);
+                    if (credential is UserCredential){
+                      if(credential.user != null){
+                        print("Login made successfully");
 
-                   } else{
-                     print("Invaild login");
-                   }
+                        Navigator.pushNamedAndRemoveUntil(context, Approutes.homescreen, (route) => false);
+
+                      }
+                    }
+                    else if(credential is String)
+                    {
+                      //exception return failed
+                      print("exception occur");
+                    }
+                    else{
+                      print("object is null");
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.all(15),
