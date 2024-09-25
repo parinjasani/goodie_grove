@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseSingleton{
@@ -17,7 +18,10 @@ class FirebaseSingleton{
   UserCredential credential =  await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
   return credential;
   }
-
+  static Future<DocumentSnapshot> adminsignin(id) async{
+    var result= FirebaseFirestore.instance.collection("admin").doc(id).get();
+    return result;
+  }
   Future<void> logout() async {
     return await mAuth.signOut();
   }

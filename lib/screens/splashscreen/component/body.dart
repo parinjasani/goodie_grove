@@ -19,29 +19,17 @@ class _BodyState extends State<Body> {
     // TODO: implement initState
     Timer(Duration(seconds: 3), () {
       //NAvigate to onboradiing
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        if (user != null) {
-          print('User is signed in ');
-          Navigator.pushReplacementNamed(context, Approutes.homescreen);
-        } else {
-               Navigator.pushReplacementNamed(context, Approutes.signinscreen);
-        }
-      });
-
-      // if(PrefUtils.getloginstatus())
-      //   {
-      //     Navigator.pushReplacementNamed(context, AppRoute.homescreen);
+      // FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      //   if (user != null) {
+      //     print('User is signed in ');
+      //     Navigator.pushReplacementNamed(context, Approutes.homescreen);
+      //   } else {
+      //          Navigator.pushReplacementNamed(context, Approutes.signinscreen);
       //   }
-      // else{
-      //   if(PrefUtils.getonboardingstatus())
-      //     {
-      //       Navigator.pushReplacementNamed(context, AppRoute.signinscreen);
-      //     }
-      //   else
-      //     {
-      //       Navigator.pushReplacementNamed(context,AppRoute.onboradingscreen);
-      //     }
-      // }
+      // });//this logic seperated in the landing page
+
+      Navigator.pushReplacementNamed(context, Approutes.landingscreen);
+
     });
     super.initState();
   }
