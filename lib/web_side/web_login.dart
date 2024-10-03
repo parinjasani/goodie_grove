@@ -37,12 +37,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                 await FirebaseAuth.instance.signInAnonymously();
             try {
               if (user != null) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>  WebMainScreen()),
-                  (route) => false,
-                );
+                Navigator.pushReplacementNamed(
+                  context, Approutes.webmainscreen,);
                 print("login made successfully");
               }
             } catch (e) {

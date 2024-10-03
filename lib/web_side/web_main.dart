@@ -3,6 +3,7 @@ import 'package:finalyeraproject/screens/adminprofile/AdminPROFILE.dart';
 import 'package:finalyeraproject/screens/creditmanagement/creditmanagement.dart';
 import 'package:finalyeraproject/screens/feedback/feedback.dart';
 import 'package:finalyeraproject/screens/giftmanagement/giftmanagement.dart';
+import 'package:finalyeraproject/screens/giftmanagement/updategodiess.dart';
 import 'package:finalyeraproject/screens/notification/notification.dart';
 import 'package:finalyeraproject/screens/usermanagement/usermanagement.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
         break;
       case Approutes.giftmanagementscreen:
         setState(() {
-          selectedScreen=const GiftmanagementScreen();
+          selectedScreen= GiftmanagementScreen();
         });
         break;
       case Approutes.feedbackscreen:
@@ -45,6 +46,11 @@ class _WebMainScreenState extends State<WebMainScreen> {
       case Approutes.notificationscreen:
         setState(() {
           selectedScreen=const NotificationScreen();
+        });
+        break;
+      case Approutes.updategoodiesscreen:
+        setState(() {
+          selectedScreen=const UpadateGoodies();
         });
         break;
       default:
@@ -65,6 +71,8 @@ class _WebMainScreenState extends State<WebMainScreen> {
           ),
         ),
         sideBar:  SideBar(
+         backgroundColor: Colors.black,
+          textStyle: TextStyle(color: Colors.white),
           onSelected: (item) {
             choosescreen(item.route);
           },
@@ -75,7 +83,8 @@ class _WebMainScreenState extends State<WebMainScreen> {
                 title: "User Management",
                 icon: Icons.supervised_user_circle_outlined,route: Approutes.usermanagementscreen),
             AdminMenuItem(title: "Credit Management", icon: Icons.credit_card,route: Approutes.creditmanagementscreen),
-            AdminMenuItem(title: "Gift Management", icon: Icons.card_giftcard,route: Approutes.giftmanagementscreen),
+            AdminMenuItem(title: "Add Goodies", icon: Icons.card_giftcard,route: Approutes.giftmanagementscreen),
+            AdminMenuItem(title: "Update Goodies", icon: Icons.card_giftcard,route: Approutes.updategoodiesscreen),
             AdminMenuItem(title: "Notification", icon: Icons.notifications,route: Approutes.notificationscreen),
             AdminMenuItem(title: "Feedback", icon: Icons.feedback,route: Approutes.feedbackscreen),
             AdminMenuItem(title: "Setting", icon: Icons.settings),

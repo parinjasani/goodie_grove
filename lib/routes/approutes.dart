@@ -1,7 +1,10 @@
+import 'package:finalyeraproject/models/goodies.dart';
 import 'package:finalyeraproject/screens/adminprofile/AdminPROFILE.dart';
 import 'package:finalyeraproject/screens/creditmanagement/creditmanagement.dart';
 import 'package:finalyeraproject/screens/feedback/feedback.dart';
 import 'package:finalyeraproject/screens/giftmanagement/giftmanagement.dart';
+import 'package:finalyeraproject/screens/giftmanagement/updategodiess.dart';
+import 'package:finalyeraproject/screens/giftmanagement/updategoodiescompletescreen.dart';
 import 'package:finalyeraproject/screens/landingscreen/landingscreen.dart';
 import 'package:finalyeraproject/screens/notification/notification.dart';
 import 'package:finalyeraproject/screens/usermanagement/usermanagement.dart';
@@ -26,6 +29,8 @@ class Approutes {
   static const homescreen = "/homescreen";
 
   // webpaes //
+  static const updategoodiescompletescreen = "/updategoodiescompletescreen";
+  static const updategoodiesscreen = "/updategoodiescreen";
   static const adminprofilescreen = "/adminprofilescreen";
   static const creditmanagementscreen = "/creditmanagement";
   static const giftmanagementscreen = "/giftmanagement";
@@ -85,6 +90,17 @@ class Approutes {
       case notificationscreen:
         return MaterialPageRoute(
           builder: (context) => NotificationScreen(),
+        );
+      case updategoodiesscreen:
+        return MaterialPageRoute(
+          builder: (context) => UpadateGoodies(),
+        );
+      case updategoodiescompletescreen:
+
+        Goodies ? goodies =
+        settings.arguments != null ? settings.arguments as Goodies : null;
+        return MaterialPageRoute(
+          builder: (context) => UpadateGoodiesScreen(goodies: goodies,),
         );
     }
   }
