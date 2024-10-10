@@ -152,7 +152,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                         submit(context);
                       },
                       child: Text(
-                        'Sign Up',
+                        'Login',
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ),
@@ -182,26 +182,26 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                   SizedBox(
                     height: 25,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Forget password?',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, Approutes.forgetpasswordscreen);
-                          },
-                          child: Text(
-                            '   Get Password',
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
-                  )
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       'Forget password?',
+                  //       style: TextStyle(fontWeight: FontWeight.bold),
+                  //     ),
+                  //     GestureDetector(
+                  //         onTap: () {
+                  //           Navigator.pushNamed(
+                  //               context, Approutes.forgetpasswordscreen);
+                  //         },
+                  //         child: Text(
+                  //           '   Get Password',
+                  //           style: TextStyle(
+                  //               color: Colors.blue,
+                  //               fontWeight: FontWeight.bold),
+                  //         )),
+                  //   ],
+                  // )
                 ],
               ),
             ),

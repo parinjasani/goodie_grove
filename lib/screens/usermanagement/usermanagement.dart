@@ -97,7 +97,7 @@ class _UsermanagementScreenState extends State<UsermanagementScreen> {
                     itemCount: emplist.length),
               );
             }else if (snapshot.hasError) {
-              return Center(child: Text("Something went wrong${snapshot.error.toString()}"));
+              return Center(child: Text("Something went wrong ${snapshot.error.toString()} ${snapshot.data}"));
             } else {
               return Center(child: CircularProgressIndicator());
             }

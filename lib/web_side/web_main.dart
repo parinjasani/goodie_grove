@@ -30,7 +30,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
         break;
       case Approutes.creditmanagementscreen:
         setState(() {
-          selectedScreen=const CreditMangement();
+          selectedScreen= CreditManagement();
         });
         break;
       case Approutes.giftmanagementscreen:
@@ -80,9 +80,9 @@ class _WebMainScreenState extends State<WebMainScreen> {
           items: const [
             AdminMenuItem(title: "My Profile", icon: Icons.person,route: Approutes.adminprofilescreen),
             AdminMenuItem(
-                title: "User Management",
+                title: "credit Management",
                 icon: Icons.supervised_user_circle_outlined,route: Approutes.usermanagementscreen),
-            AdminMenuItem(title: "Credit Management", icon: Icons.credit_card,route: Approutes.creditmanagementscreen),
+            AdminMenuItem(title: "user Management", icon: Icons.credit_card,route: Approutes.creditmanagementscreen),
             AdminMenuItem(title: "Add Goodies", icon: Icons.card_giftcard,route: Approutes.giftmanagementscreen),
             AdminMenuItem(title: "Update Goodies", icon: Icons.card_giftcard,route: Approutes.updategoodiesscreen),
             AdminMenuItem(title: "Notification", icon: Icons.notifications,route: Approutes.notificationscreen),

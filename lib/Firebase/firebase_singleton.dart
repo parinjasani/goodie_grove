@@ -50,6 +50,7 @@ class FirebaseSingleton{
   //     }).toList();
   //   });
   // }
+
   Stream<List<Employee>> getUserlist() {
     return _mRef.child("employee").onValue.map((event) {
       final data = event.snapshot.value;
@@ -58,26 +59,36 @@ class FirebaseSingleton{
         return <Employee>[]; // Return an empty list if there's no data
       }
 
-      if (data is Map<String, dynamic>) {
+      if (data is Map<dynamic, dynamic>) {
         // If the data is a Map
         return data.values.map((e) {
-          Map<String, dynamic> value = Map<String, dynamic>.from(e);
-          return Employee.fromMap(value);
-        }).toList();
+          if (e is Map<dynamic, dynamic>) {
+            return Employee.fromMap(Map<String, dynamic>.from(e));
+          }
+          return null; // Handle unexpected data types
+        }).where((e) => e != null).cast<Employee>().toList();
       } else if (data is List<dynamic>) {
         // If the data is a List
         return data
-            .where((e) => e != null) // Filter out null values if any
+            .where((e) => e != null) // Filter out null values
             .map((e) {
-          Map<String, dynamic> value = Map<String, dynamic>.from(e);
-          return Employee.fromMap(value);
+          if (e is Map<dynamic, dynamic>) {
+            return Employee.fromMap(Map<String, dynamic>.from(e));
+          }
+          return null; // Handle unexpected data types
         })
+            .where((e) => e != null) // Filter out null values
+            .cast<Employee>() // Cast the resulting iterable to Employee
             .toList();
       } else {
         return <Employee>[]; // Return an empty list for unexpected data types
       }
     });
   }
+
+
+
+
 
   Future<void> updateEmployeeCreditByEmail(String email, int newCredit) async {
     // Query to get the employee list
@@ -108,6 +119,62 @@ class FirebaseSingleton{
       print("No employee data found.");
     }
   }
+
+  Future<String?> registerUser({
+    required String email,
+    required String password,
+    required String username,
+    String? profilePicUrl, // Nullable profilePicUrl
+    required int credit,
+  }) async {
+    try {
+      // Check if the email already exists in Realtime Database
+      DatabaseEvent event = await _mRef
+          .child('employee')
+          .orderByChild('email')
+          .equalTo(email)
+          .once();
+
+      DataSnapshot snapshot = event.snapshot;
+
+      if (snapshot.value != null) {
+        // Email already exists
+        return 'User with this email already exists';
+      }
+
+      // Create a new user in Firebase Authentication
+      UserCredential userCredential = await mAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Prepare user data
+      Map<String, dynamic> userData = {
+        'email': email,
+        'username': username,
+        'credit': credit,
+      };
+
+      // If profilePicUrl is provided, add it to the user data
+      if (profilePicUrl != null && profilePicUrl.isNotEmpty) {
+        userData['profilePicUrl'] = profilePicUrl;
+      } else {
+        userData['profilePicUrl'] = "${userData['email']}example.com";  // Set a blank value if not provided
+      }
+
+      // Add user data to Realtime Database
+      await _mRef.child('employee').child(userCredential.user!.uid).set(userData);
+
+      // Successfully registered
+      return null; // Return null to indicate success
+    } catch (e) {
+      // Handle errors such as weak password, email already in use, etc.
+      print("Error: $e");
+      return 'Failed to register user';
+    }
+  }
+
+
 
 
 

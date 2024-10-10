@@ -81,7 +81,7 @@ class Approutes {
         );
       case creditmanagementscreen:
         return MaterialPageRoute(
-          builder: (context) => CreditMangement(),
+          builder: (context) => CreditManagement(),
         );
       case feedbackscreen:
         return MaterialPageRoute(

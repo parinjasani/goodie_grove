@@ -19,7 +19,7 @@ class Employee{
     };
   }
 
-  factory Employee.fromMap(Map<String, dynamic> map) {
+  factory Employee.fromMap(Map<dynamic, dynamic> map) {
     return Employee(
       credit: map['credit'] as int,
       username: map['username'] as String,
