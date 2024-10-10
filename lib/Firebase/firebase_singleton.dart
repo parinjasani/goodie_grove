@@ -79,6 +79,7 @@ class FirebaseSingleton{
     });
   }
 
+
   Future<void> updateEmployeeCreditByEmail(String email, int newCredit) async {
     // Query to get the employee list
     final snapshot = await _mRef.child("employee").once();
@@ -111,4 +112,65 @@ class FirebaseSingleton{
 
 
 
+  Future<Employee?> getOneEmployeeByUid(String uid) async {
+    // Query to get the employee data
+    final snapshot = await _mRef.child("employee").once();
+
+    // Check if the snapshot has data
+    if (snapshot.snapshot.value != null) {
+      final data = snapshot.snapshot.value;
+
+      // Check if data is a Map
+      if (data is Map<dynamic, dynamic>) {
+        // Check if the UID exists in the data
+        if (data.containsKey(uid)) {
+          // Get the employee data for the specified UID
+          final employeeData = data[uid];
+
+          // Ensure employeeData is a Map and convert it safely
+          if (employeeData is Map<Object?, Object?>) {
+            return Employee.fromMap(employeeData.cast<String, dynamic>());
+          }
+        } else {
+          print("Employee with UID $uid not found."); // Log if UID is not found
+        }
+      } else {
+        print("Data is not in the expected Map format."); // Log if data is not a map
+      }
+    } else {
+      print("No employee data found."); // Log if no data is found
+    }
+
+    return null; // Return null if no matching employee is found
+  }
+
+
+
+
+
+  Future<void> updateEmployeeCredits(String email, int newCredits) async {
+    final snapshot = await _mRef.child("employee").once();
+    if (snapshot.snapshot.value != null) {
+      final data = snapshot.snapshot.value as List;
+      for (int i = 0; i < data.length; i++) {
+        if (data[i]["email"] == email) {
+          await _mRef.child("employee/$i/credit").set(newCredits);
+          return;
+        }
+      }
+    }
+  }
+
+  // Add redemption history
+  Future<void> addRedemptionHistory(String email, String productName, int creditsUsed) async {
+    final historyRef = _mRef.child("history").push();
+    await historyRef.set({
+      'email': email,
+      'productName': productName,
+      'creditsUsed': creditsUsed,
+      'redeemedAt': DateTime.now().toIso8601String(),
+    });
+  }
 }
+
+

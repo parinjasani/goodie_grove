@@ -21,7 +21,7 @@ class HomeScreenDrawer extends StatelessWidget {
             leading: Icon(Icons.add_box_outlined),
             //navigate to categorylist screen
             onTap: () {
-             // Navigator.pushNamed(context, Approutes.);
+             Navigator.pushNamed(context, Approutes.profilescreen);
             },
           ),
           ListTile(
@@ -33,14 +33,14 @@ class HomeScreenDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              // Navigator.pushNamed(context, Approutes.);
+              Navigator.pushNamed(context, Approutes.settingscreen);
             },
             title: Text("Settings"),
             leading: Icon(Icons.add_box_outlined),
           ),
           ListTile(
             onTap: () {
-              // Navigator.pushNamed(context, Approutes.);
+              Navigator.pushNamed(context, Approutes.helpsupportscreen);
             },
             title: Text("Help & Support"),
             leading: Icon(Icons.add_box_outlined),

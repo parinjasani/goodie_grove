@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NotificationScreen extends StatelessWidget {
+class AppNotificationScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +47,7 @@ class NotificationItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold, fontSize: 18)),
+            Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             SizedBox(height: 4),
             Text(description),
             SizedBox(height: 8),

@@ -17,12 +17,12 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     // TODO: implement initState
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 6), () {
       //NAvigate to onboradiing
       // FirebaseAuth.instance.authStateChanges().listen((User? user) {
       //   if (user != null) {
       //     print('User is signed in ');
-      //     Navigator.pushReplacementNamed(context, Approutes.homescreen);
+        // Navigator.pushReplacementNamed(context, Approutes.homescreen);
       //   } else {
       //          Navigator.pushReplacementNamed(context, Approutes.signinscreen);
       //   }
@@ -44,7 +44,8 @@ class _BodyState extends State<Body> {
         ),
         Center(
           child: Image.asset(
-            "assets/images/shop-logo.png",
+           // "assets/images/shop-logo.png",
+            "assets/images/splash.png",
             height: 600,
             width: 300,
           ),

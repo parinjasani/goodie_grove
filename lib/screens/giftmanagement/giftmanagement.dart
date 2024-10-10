@@ -159,7 +159,7 @@ class _GiftmanagementScreenState extends State<GiftmanagementScreen> {
                   height: 15,
                 ),
                 MaterialButton(
-                  //color: Colors.black,
+                  color: Colors.grey,
                   minWidth: 20.h,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
@@ -239,7 +239,7 @@ class _GiftmanagementScreenState extends State<GiftmanagementScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                SwitchListTile(title:Text(" Is this Gooide Popular?"),value: isPopular, onChanged: (value) {
+                SwitchListTile(title:Text(" Is this Gooide Popular?",style: TextStyle(color: Colors.black)),value: isPopular, onChanged: (value) {
                   setState(() {
                     isPopular=!isPopular;
                   });

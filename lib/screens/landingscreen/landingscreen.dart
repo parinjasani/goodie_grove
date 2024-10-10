@@ -1,4 +1,4 @@
-import 'package:finalyeraproject/screens/homescreen/homescreen.dart';
+import 'package:finalyeraproject/screens/webhomescreen/homescreen.dart';
 import 'package:finalyeraproject/screens/signin/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
