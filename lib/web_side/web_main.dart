@@ -45,7 +45,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
         break;
       case Approutes.notificationscreen:
         setState(() {
-          selectedScreen=const NotificationScreen();
+          selectedScreen= NotificationScreen();
         });
         break;
       case Approutes.updategoodiesscreen:
@@ -62,6 +62,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
   @override
   Widget build(BuildContext context) {
     return AdminScaffold(
+      backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
@@ -71,6 +72,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
           ),
         ),
         sideBar:  SideBar(
+
          backgroundColor: Colors.black,
           textStyle: TextStyle(color: Colors.white),
           onSelected: (item) {

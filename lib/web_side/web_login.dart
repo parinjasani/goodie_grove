@@ -71,7 +71,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
       key: formKey,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.grey[300],
+          backgroundColor: Colors.black87,
           body: Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.h),
@@ -80,14 +80,14 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                 children: [
                   const Text(
                     'Hello ADMIN',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
+                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 36),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   const Text(
                     "Welcome back, you've been missed!",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(color: Colors.white,fontSize: 20),
                   ),
                   const SizedBox(
                     height: 50,
@@ -97,7 +97,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey[200]),
+                          color: Colors.white),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: TextFormField(
@@ -106,7 +106,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                           },
                           controller: _usernameController,
                           decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: "Username"),
+                              border: InputBorder.none,hintText: "Username",hintStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
                         ),
                       ),
                     ),
@@ -119,7 +119,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey[200]),
+                          color: Colors.white),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: TextFormField(
@@ -131,6 +131,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: "Password",
+                            hintStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)
                           ),
                         ),
                       ),
@@ -179,9 +180,15 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                     //   ),
                     // ),
                   ),
+
                   SizedBox(
                     height: 25,
                   ),
+
+                  // SizedBox(
+                  //   height: 25,
+                  // ),
+
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
                   //   children: [

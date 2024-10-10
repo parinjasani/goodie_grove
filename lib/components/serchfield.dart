@@ -5,7 +5,7 @@ class SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black38.withOpacity(0.1),
+        color: Colors.black38.withOpacity(0.3),
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
@@ -15,7 +15,8 @@ class SearchField extends StatelessWidget {
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           hintText: "Search product",
-          suffixIcon: Icon(Icons.search_rounded),
+
+          suffixIcon: Icon(Icons.search_rounded,color: Colors.white),
           contentPadding: EdgeInsets.symmetric(vertical: 15,horizontal: 20)
         ),
       ),

@@ -56,6 +56,7 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           child: Center(
@@ -202,8 +203,9 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
                         color: Colors.grey.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(20)),
                   ),
+                  SizedBox(height: 15,),
                   MaterialButton(
-                    //color: Colors.black,
+                    color: Colors.black,
                     minWidth: 20.h,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
@@ -213,7 +215,7 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
                     },
                     child: Text(
                       'PICK IMAGES',
-                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ),
                   SizedBox(
@@ -283,7 +285,7 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  SwitchListTile(title:Text(" Is this Gooide Popular?"),value: isPopular, onChanged: (value) {
+                  SwitchListTile(title:Text(" Is this Gooide Popular?",style: TextStyle(color: Colors.black)),value: isPopular, onChanged: (value) {
                     setState(() {
                       isPopular=!isPopular;
                     });

@@ -55,7 +55,7 @@ class Signin_Page extends StatelessWidget {
                     child: TextField(
                       controller: _emailController,
                       decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: "Email"),
+                          border: InputBorder.none, hintText: "Email",),
                     ),
                   ),
                 ),
@@ -107,7 +107,7 @@ class Signin_Page extends StatelessWidget {
                   },
                   child: Container(
                     padding: EdgeInsets.all(15),
-                    child: const Text("Sign In", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),),
+                    child: const Text("Sign in", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),),
                     decoration: BoxDecoration(
                       color: Colors.deepPurple,
                       borderRadius: BorderRadius.circular(12),

@@ -86,10 +86,6 @@ class FirebaseSingleton{
     });
   }
 
-
-
-
-
   Future<void> updateEmployeeCreditByEmail(String email, int newCredit) async {
     // Query to get the employee list
     final snapshot = await _mRef.child("employee").once();
@@ -178,4 +174,70 @@ class FirebaseSingleton{
 
 
 
+  Future<Employee?> getOneEmployeeByUid(String uid) async {
+    // Query to get the employee data
+    final snapshot = await _mRef.child("employee").once();
+
+    // Check if the snapshot has data
+    if (snapshot.snapshot.value != null) {
+      final data = snapshot.snapshot.value;
+
+      // Check if data is a Map
+      if (data is Map<dynamic, dynamic>) {
+        // Check if the UID exists in the data
+        if (data.containsKey(uid)) {
+          // Get the employee data for the specified UID
+          final employeeData = data[uid];
+
+          // Ensure employeeData is a Map and convert it safely
+          if (employeeData is Map<Object?, Object?>) {
+            return Employee.fromMap(employeeData.cast<String, dynamic>());
+          }
+        } else {
+          print("Employee with UID $uid not found."); // Log if UID is not found
+        }
+      } else {
+        print("Data is not in the expected Map format."); // Log if data is not a map
+      }
+    } else {
+      print("No employee data found."); // Log if no data is found
+    }
+
+    return null; // Return null if no matching employee is found
+  }
+
+
+
+
+
+  Future<void> updateEmployeeCredits(String uid, int newCredits) async {
+    try {
+      // Check if the employee with the provided uid exists in the database
+      final snapshot = await _mRef.child("employee").child(uid).once();
+
+      if (snapshot.snapshot.value != null) {
+        // Employee exists, proceed to update the credit field
+        await _mRef.child("employee").child(uid).child("credit").set(newCredits);
+        print("Credits updated successfully.");
+      } else {
+        print("Employee with uid $uid not found.");
+      }
+    } catch (e) {
+      print("Error updating employee credits: $e");
+    }
+  }
+
+
+  // Add redemption history
+  Future<void> addRedemptionHistory(String email, String productName, int creditsUsed) async {
+    final historyRef = _mRef.child("history").push();
+    await historyRef.set({
+      'email': email,
+      'productName': productName,
+      'creditsUsed': creditsUsed,
+      'redeemedAt': DateTime.now().toIso8601String(),
+    });
+  }
 }
+
+
