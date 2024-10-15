@@ -23,7 +23,7 @@ ThemeData apptheme() {
 
 cardtheme() {
   return CardTheme(
-    color: Colors.black38
+    color: Colors.white
   );
 }
 

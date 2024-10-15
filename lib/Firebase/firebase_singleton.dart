@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finalyeraproject/models/Employee.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebaseSingleton{
 
@@ -32,7 +34,13 @@ class FirebaseSingleton{
     return await mAuth.signOut();
   }
 
-   Future<dynamic> forgetmethod(String email) async {
+  // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  //   await Firebase.initializeApp();
+  //   print("Handling background notification: ${message.messageId}");
+  // }
+
+
+  Future<dynamic> forgetmethod(String email) async {
     var forgetcredential  = await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     return forgetcredential;
   }
@@ -206,10 +214,7 @@ class FirebaseSingleton{
     return null; // Return null if no matching employee is found
   }
 
-
-
-
-
+  
   Future<void> updateEmployeeCredits(String uid, int newCredits) async {
     try {
       // Check if the employee with the provided uid exists in the database
@@ -229,15 +234,28 @@ class FirebaseSingleton{
 
 
   // Add redemption history
-  Future<void> addRedemptionHistory(String email, String productName, int creditsUsed) async {
+  Future<void> addRedemptionHistory(
+      String email, String productName, int creditsUsed, dynamic productImageUrl) async {
+
     final historyRef = _mRef.child("history").push();
     await historyRef.set({
       'email': email,
       'productName': productName,
       'creditsUsed': creditsUsed,
+      'productImageUrl': productImageUrl, // Store the image URL
       'redeemedAt': DateTime.now().toIso8601String(),
     });
   }
+
+  // Future<void> addRedemptionHistory(String email, String productName, int creditsUsed) async {
+  //   final historyRef = _mRef.child("history").push();
+  //   await historyRef.set({
+  //     'email': email,
+  //     'productName': productName,
+  //     'creditsUsed': creditsUsed,
+  //     'redeemedAt': DateTime.now().toIso8601String(),
+  //   });
+  // }
 }
 
 

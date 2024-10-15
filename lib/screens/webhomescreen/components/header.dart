@@ -1,10 +1,11 @@
 import 'package:finalyeraproject/screens/Notification_screen/notifications_page.dart';
+import 'package:finalyeraproject/screens/Profilescreen/profilescreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/rounded_icon.dart';
 import '../../../components/serchfield.dart';
-import '../../Profilescreen/profliescreen.dart';
+
 
 
 class LayoutHeader extends StatefulWidget {
