@@ -50,14 +50,14 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
 
       // Update credits in Firebase
       await _firebaseSingleton.updateEmployeeCredits(
-          currentUser!.email!, employee!.credit!);
+          currentUser!.uid!, employee!.credit!);
 
       // Show success SnackBar
       _showSnackBar("Item Redeemed Successfully", Colors.green);
 
       // Add to history
       await _firebaseSingleton.addRedemptionHistory(currentUser!.email!,
-          widget.goodies.productname ?? 'Unknown Product', giftCredits);
+          widget.goodies.productname ?? 'Unknown Product', giftCredits,widget.goodies.imageUrls);
     } else {
       // Not enough credits
       _showSnackBar("Not enough credits to redeem this item.", Colors.red);
@@ -122,70 +122,80 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.goodies.productname ?? 'Gift Details'),
-        backgroundColor: Colors.teal,
+        // backgroundColor: Colors.teal,
       ),
-      body: SingleChildScrollView(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        // Image Carousel
-        Container(
-          height: 300,
-          child: PageView.builder(
-            itemCount: widget.goodies.imageUrls?.length ?? 0,
-            itemBuilder: (ctx, index) {
-              return Image.network(
-                widget.goodies.imageUrls![index],
-                fit: BoxFit.cover,
-              );
-            },
+      body: SafeArea(
+        child: SingleChildScrollView(
+          
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          // Image Carousel
+          Container(
+            height: 300,
+            child: PageView.builder(
+              itemCount: widget.goodies.imageUrls?.length ?? 0,
+              itemBuilder: (ctx, index) {
+                return Image.network(
+                  widget.goodies.imageUrls![index],
+                  fit: BoxFit.cover,
+                );
+              },
+            ),
           ),
-        ),
-        SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Product Name
-              Text(
-                widget.goodies.productname ?? 'Unknown Product',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-              SizedBox(height: 10),
-              // Product Credits
-              Text(
-                'Credits: ${widget.goodies.credits ?? 0}',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey[700],
-                ),
-              ),
-              SizedBox(height: 10),
-              // Product Description
-              Text(
-                widget.goodies.details ?? 'No details available',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              SizedBox(height: 20),
-
-              Center(
-                child: ElevatedButton(
-                  onPressed: _isRedeemed ? null : _redeemGoodie,
-                  child: Text(_isRedeemed ? 'Redeemed' : 'Redeem Now'),
-                  style: ElevatedButton.styleFrom(
-                    primary: _isRedeemed ? Colors.grey : Colors.teal,
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Product Name
+                Text(
+                  widget.goodies.productname ?? 'Unknown Product',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 18),
+                // Product Credits
+                Text(
+                  'Credits: ${widget.goodies.credits ?? 0}',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 17),
+                // Product Description
+                Text(
+                  widget.goodies.details ?? 'No details available',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19,
+                  ),
+                ),
+                SizedBox(height: 80),
+
+                Center(
+                  child: Container(
+                    height: 65,
+                    width: 200,
+                    child: ElevatedButton(
+
+                      onPressed: _isRedeemed ? null : _redeemGoodie,
+                      child: Text(style: TextStyle(fontSize: 20,color: Colors.white),_isRedeemed ? 'Redeemed' : 'Redeem Now'),
+                      style: ElevatedButton.styleFrom(
+                        primary: _isRedeemed ? Colors.grey : Colors.black54,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ])),
+        ])),
+      ),
     );
   }
 }

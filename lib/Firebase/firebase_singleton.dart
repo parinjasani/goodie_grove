@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finalyeraproject/models/Employee.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebaseSingleton{
 
@@ -32,7 +34,13 @@ class FirebaseSingleton{
     return await mAuth.signOut();
   }
 
-   Future<dynamic> forgetmethod(String email) async {
+  // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  //   await Firebase.initializeApp();
+  //   print("Handling background notification: ${message.messageId}");
+  // }
+
+
+  Future<dynamic> forgetmethod(String email) async {
     var forgetcredential  = await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     return forgetcredential;
   }
@@ -148,29 +156,47 @@ class FirebaseSingleton{
 
 
 
-  Future<void> updateEmployeeCredits(String email, int newCredits) async {
-    final snapshot = await _mRef.child("employee").once();
-    if (snapshot.snapshot.value != null) {
-      final data = snapshot.snapshot.value as List;
-      for (int i = 0; i < data.length; i++) {
-        if (data[i]["email"] == email) {
-          await _mRef.child("employee/$i/credit").set(newCredits);
-          return;
-        }
+
+  Future<void> updateEmployeeCredits(String uid, int newCredits) async {
+    try {
+      // Check if the employee with the provided uid exists in the database
+      final snapshot = await _mRef.child("employee").child(uid).once();
+
+      if (snapshot.snapshot.value != null) {
+        // Employee exists, proceed to update the credit field
+        await _mRef.child("employee").child(uid).child("credit").set(newCredits);
+        print("Credits updated successfully.");
+      } else {
+        print("Employee with uid $uid not found.");
       }
+    } catch (e) {
+      print("Error updating employee credits: $e");
     }
   }
 
   // Add redemption history
-  Future<void> addRedemptionHistory(String email, String productName, int creditsUsed) async {
+  Future<void> addRedemptionHistory(
+      String email, String productName, int creditsUsed, dynamic productImageUrl) async {
+
     final historyRef = _mRef.child("history").push();
     await historyRef.set({
       'email': email,
       'productName': productName,
       'creditsUsed': creditsUsed,
+      'productImageUrl': productImageUrl, // Store the image URL
       'redeemedAt': DateTime.now().toIso8601String(),
     });
   }
+
+  // Future<void> addRedemptionHistory(String email, String productName, int creditsUsed) async {
+  //   final historyRef = _mRef.child("history").push();
+  //   await historyRef.set({
+  //     'email': email,
+  //     'productName': productName,
+  //     'creditsUsed': creditsUsed,
+  //     'redeemedAt': DateTime.now().toIso8601String(),
+  //   });
+  // }
 }
 
 

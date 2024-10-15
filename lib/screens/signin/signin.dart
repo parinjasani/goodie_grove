@@ -25,21 +25,21 @@ class Signin_Page extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[300],
+        // backgroundColor: Colors.grey[300],
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
                 'Hello Again!',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
+                style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 36),
               ),
               const SizedBox(
                 height: 10,
               ),
               const Text(
                 "Welcome back, you've been missed!",
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(color: Colors.white,fontSize: 20),
               ),
               const SizedBox(
                 height: 50,
@@ -55,13 +55,13 @@ class Signin_Page extends StatelessWidget {
                     child: TextField(
                       controller: _emailController,
                       decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: "Email",),
+                          border: InputBorder.none, hintText: "Email",hintStyle: TextStyle(color: Colors.black)),
                     ),
                   ),
                 ),
               ),
               const SizedBox(
-                height: 05,
+                height: 15,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -77,6 +77,7 @@ class Signin_Page extends StatelessWidget {
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Password",
+                          hintStyle: TextStyle(color: Colors.black)
                       ),
                     ),
                   ),
@@ -106,7 +107,7 @@ class Signin_Page extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    padding: EdgeInsets.all(15),
+                    padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
                     child: const Text("Sign in", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),),
                     decoration: BoxDecoration(
                       color: Colors.deepPurple,
@@ -119,12 +120,12 @@ class Signin_Page extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Forget password?', style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text('Forget password?', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, Approutes.forgetpasswordscreen);
                     },
-                      child: Text('   Get Password', style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)),
+                      child: Text('   Get Password', style: TextStyle(fontSize: 18,color: Colors.black54,fontWeight: FontWeight.bold),)),
                 ],
               )
 
