@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData apptheme() {
   return ThemeData(
       //scaffoldBackgroundColor: Colors.white,
-      scaffoldBackgroundColor: Color(0xFF2E3A3F),
+      scaffoldBackgroundColor: Color(0xffFFCCBC  ),
       //scaffoldBackgroundColor: Colors.black,
        primarySwatch: Colors.indigo,
       // primaryColor: Color(0xff54A97A),

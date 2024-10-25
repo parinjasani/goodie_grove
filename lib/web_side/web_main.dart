@@ -20,7 +20,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
     switch(item){
       case Approutes.adminprofilescreen:
         setState(() {
-          selectedScreen=const AdminProfile();
+          selectedScreen= AdminProfile();
         });
         break;
       case Approutes.usermanagementscreen:
@@ -64,11 +64,11 @@ class _WebMainScreenState extends State<WebMainScreen> {
     return AdminScaffold(
       backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           title: Text(
             "ADMIN",
             style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
           ),
         ),
         sideBar:  SideBar(
@@ -82,9 +82,9 @@ class _WebMainScreenState extends State<WebMainScreen> {
           items: const [
             AdminMenuItem(title: "My Profile", icon: Icons.person,route: Approutes.adminprofilescreen),
             AdminMenuItem(
-                title: "credit Management",
-                icon: Icons.supervised_user_circle_outlined,route: Approutes.usermanagementscreen),
-            AdminMenuItem(title: "user Management", icon: Icons.credit_card,route: Approutes.creditmanagementscreen),
+                title: "Credit Management",
+                icon: Icons.credit_card,route: Approutes.usermanagementscreen),
+            AdminMenuItem(title: "User Management", icon: Icons.supervised_user_circle_outlined,route: Approutes.creditmanagementscreen),
             AdminMenuItem(title: "Add Goodies", icon: Icons.card_giftcard,route: Approutes.giftmanagementscreen),
             AdminMenuItem(title: "Update Goodies", icon: Icons.card_giftcard,route: Approutes.updategoodiesscreen),
             AdminMenuItem(title: "Notification", icon: Icons.notifications,route: Approutes.notificationscreen),

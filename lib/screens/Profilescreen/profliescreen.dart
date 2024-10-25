@@ -36,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print("Employee not found for email: ${currentUser!.email!}");
     }
     setState(() {
+
       isLoading = false; // Fetching done, stop loading
     });
   }

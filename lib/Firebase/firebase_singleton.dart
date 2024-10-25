@@ -62,67 +62,80 @@ class FirebaseSingleton{
   Stream<List<Employee>> getUserlist() {
     return _mRef.child("employee").onValue.map((event) {
       final data = event.snapshot.value;
-
+      //print(data);
       if (data == null) {
         return <Employee>[]; // Return an empty list if there's no data
       }
 
       if (data is Map<dynamic, dynamic>) {
-        // If the data is a Map
-        return data.values.map((e) {
-          if (e is Map<dynamic, dynamic>) {
-            return Employee.fromMap(Map<String, dynamic>.from(e));
-          }
-          return null; // Handle unexpected data types
-        }).where((e) => e != null).cast<Employee>().toList();
-      } else if (data is List<dynamic>) {
-        // If the data is a List
-        return data
-            .where((e) => e != null) // Filter out null values
-            .map((e) {
-          if (e is Map<dynamic, dynamic>) {
-            return Employee.fromMap(Map<String, dynamic>.from(e));
-          }
-          return null; // Handle unexpected data types
-        })
-            .where((e) => e != null) // Filter out null values
-            .cast<Employee>() // Cast the resulting iterable to Employee
-            .toList();
+        // Map through each employee entry
+        return data.entries.map((entry) {
+          final employeeData = entry.value as Map<dynamic, dynamic>;
+
+          // Convert the dynamic map to a typed Map<String, dynamic>
+          return Employee.fromMap(Map<String, dynamic>.from(employeeData));
+        }).toList();
       } else {
-        return <Employee>[]; // Return an empty list for unexpected data types
+        return <Employee>[]; // Return an empty list for unexpected data formats
       }
     });
   }
-
   Future<void> updateEmployeeCreditByEmail(String email, int newCredit) async {
-    // Query to get the employee list
+    // Query to get the employee data
     final snapshot = await _mRef.child("employee").once();
 
     // Check if the snapshot has data
     if (snapshot.snapshot.value != null) {
-      final data = snapshot.snapshot.value;
+      final data = snapshot.snapshot.value as Map<String, dynamic>;
 
-      // Check if the data is a List
-      if (data is List<dynamic>) {
-        for (int i = 0; i < data.length; i++) {
-          if (data[i] != null && data[i]["email"] == email) {
-            // Update the credit field of the specific employee
-            await _mRef.child("employee/$i").update({
-              "credit": newCredit,
-            });
+      // Iterate over the map to find the matching email
+      data.forEach((key, value) async {
+        if (value["email"] == email) {
+          // Update the credit field of the specific employee
+          await _mRef.child("employee/$key").update({
+            "credit": newCredit,
+          });
 
-            print("Credit updated successfully.");
-            return; // Exit the function after updating
-          }
+          print("Credit updated successfully.");
+          return; // Exit the function after updating
         }
-        print("Employee with email $email not found.");
-      } else {
-        print("Data is not in the expected List format.");
-      }
+      });
+
+      print("Employee with email $email not found.");
     } else {
       print("No employee data found.");
     }
   }
+
+  // Future<void> updateEmployeeCreditByEmail(String email, int newCredit) async {
+  //   // Query to get the employee list
+  //   final snapshot = await _mRef.child("employee").once();
+  //
+  //   // Check if the snapshot has data
+  //   if (snapshot.snapshot.value != null) {
+  //     final data = snapshot.snapshot.value;
+  //
+  //     // Check if the data is a List
+  //     if (data is List<dynamic>) {
+  //       for (int i = 0; i < data.length; i++) {
+  //         if (data[i] != null && data[i]["email"] == email) {
+  //           // Update the credit field of the specific employee
+  //           await _mRef.child("employee/$i").update({
+  //             "credit": newCredit,
+  //           });
+  //
+  //           print("Credit updated successfully.");
+  //           return; // Exit the function after updating
+  //         }
+  //       }
+  //       print("Employee with email $email not found.");
+  //     } else {
+  //       print("Data is not in the expected List format.");
+  //     }
+  //   } else {
+  //     print("No employee data found.");
+  //   }
+  // }
 
   Future<String?> registerUser({
     required String email,

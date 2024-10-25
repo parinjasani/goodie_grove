@@ -56,7 +56,10 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black87,
+      appBar: AppBar(
+        title: Text(' Update Screen'),
+      ),
       body: SingleChildScrollView(
         child: Container(
           child: Center(
@@ -64,106 +67,124 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               child: Column(
                 children: [
-                  Text(
-                    "UPDATE GOODIE",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+
                   SizedBox(
                     height: 15,
                   ),
-                  DropdownButtonFormField(
-                    hint: Text("Choose category"),
-                    validator: (value) {
-                      if (value == null) {
-                        return "category must be selected";
-                      }
-                      return null;
-                    },
-                    value: selectedValue,
-                    items: categories
-                        .map((e) => DropdownMenuItem<String>(
-                        value: e, child: Text(e.toString())))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value.toString();
-                      });
-                    },
+                  Container(decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white),
+                    child: DropdownButtonFormField(
+                      hint: Text("Choose category",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
+                      validator: (value) {
+                        if (value == null) {
+                          return "category must be selected";
+                        }
+                        return null;
+                      },
+                      value: selectedValue,
+                      items: categories
+                          .map((e) => DropdownMenuItem<String>(
+                          value: e, child: Text(e.toString())))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value.toString();
+                        });
+                      },
+                    ),
                   ),
 
                   SizedBox(
                     height: 15,
                   ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "should not be empty";
-                      }
-                      return null;
-                    },
-                    controller: _productnameController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: "Name",
-                      hintText: "Product name",
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  Container(decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "should not be empty";
+                        }
+                        return null;
+                      },
+                      controller: _productnameController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "Name",labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+                        hintText: "Product name",
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 15,
                   ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "should not be empty";
-                      }
-                      return null;
-                    },
-                    maxLines: 3,
-                    controller: _detailsController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: "details",
-                      hintText: "Product details",
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        color: Colors.white),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "should not be empty";
+                        }
+                        return null;
+                      },
+                      maxLines: 3,
+                      controller: _detailsController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "details",labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+                        hintText: "Product details",
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 15,
                   ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "should not be empty";
-                      }
-                      return null;
-                    },
-                    controller: _creditController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: "Credits",
-                      hintText: "Product Credits",
-                      //errorText: erroremail,
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  Container(decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "should not be empty";
+                        }
+                        return null;
+                      },
+                      controller: _creditController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: "Credits",labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+                        hintText: "Product Credits",
+                        //errorText: erroremail,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 15,
                   ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "should not be empty";
-                      }
-                      return null;
-                    },
-                    controller: _serialcodeController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: "serialcode",
-                      hintText: "Product serialcode",
-                      //errorText: erroremail,
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  Container(decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "should not be empty";
+                        }
+                        return null;
+                      },
+                      controller: _serialcodeController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "serialcode",labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+                        hintText: "Product serialcode",
+                        //errorText: erroremail,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -200,12 +221,12 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
                         itemCount: widget.goodies!.imageUrls!.length),
                     height: 25.h,
                     decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: Colors.grey,
                         borderRadius: BorderRadius.circular(20)),
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(height: 25,),
                   MaterialButton(
-                    color: Colors.black,
+                    color: Colors.indigo,
                     minWidth: 20.h,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
@@ -219,7 +240,7 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   // MaterialButton(
                   //   //color: Colors.black,
@@ -246,7 +267,7 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
                   //   ),
                   // ),
                   SizedBox(
-                    height: 15,
+                    height: 25,
                   ),
                   Container(
                     child: GridView.builder(
@@ -279,19 +300,19 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
                         itemCount: images.length),
                     height: 45.h,
                     decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: Colors.grey,
                         borderRadius: BorderRadius.circular(20)),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
-                  SwitchListTile(title:Text(" Is this Gooide Popular?",style: TextStyle(color: Colors.black)),value: isPopular, onChanged: (value) {
+                  SwitchListTile(title:Text(" Is this Gooide Popular?",style: TextStyle(color: Colors.white)),value: isPopular, onChanged: (value) {
                     setState(() {
                       isPopular=!isPopular;
                     });
                   },),
                   SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   MaterialButton(
                     minWidth: 20.h,
@@ -312,11 +333,11 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
                         Visibility(
                             visible: isSaving,
                             child: Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(color: Colors.white),
                             ))
                       ],
                     ),
-                    color: Colors.black,
+                    color: Colors.indigo,
                   ),
                 ],
               ),
@@ -348,7 +369,7 @@ class _UpadateGoodiesScreenState extends State<UpadateGoodiesScreen> {
         imageUrls.clear();
         clearField();
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Upated")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Updated")));
 
 
       });

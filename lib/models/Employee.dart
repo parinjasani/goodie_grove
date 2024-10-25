@@ -24,7 +24,7 @@ class Employee{
     return Employee(
       credit: map['credit'] as int,
       username: map['username'] as String,
-      profilepicurl: map['profilepicurl'] as String,
+      profilepicurl: map['profilepicurl'] ?? " ",
       email: map['email'] as String,
     );
   }

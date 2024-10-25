@@ -45,9 +45,9 @@ class _BodyState extends State<Body> {
         Center(
           child: Image.asset(
            // "assets/images/shop-logo.png",
-            "assets/images/splash.png",
-            height: 600,
-            width: 300,
+            "assets/images/splash1.png",
+            height: 700,
+            width: 350,
           ),
         )
       ],

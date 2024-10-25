@@ -104,7 +104,9 @@ class Body extends StatelessWidget {
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.black38.withOpacity(0.2),//Color(0xFF4E5452), // GridView background color
+                                  border: Border.all(style: BorderStyle.solid),
+
+                                  color: Color(0xffffffff ),//Color(0xFF4E5452), // GridView background color
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Column(
@@ -129,7 +131,7 @@ class Body extends StatelessWidget {
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.white,
+                                              color: Colors.black,
                                             ),
                                           ),
                                           SizedBox(height: 4),
@@ -139,16 +141,16 @@ class Body extends StatelessWidget {
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey[300],
+                                              color: Colors.black,
                                             ),
                                           ),
                                           SizedBox(height: 4),
                                           Text(
                                             'Credits: ${goodies.credits ?? 0}',
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.white,
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ],

@@ -11,34 +11,57 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
   final User? currentUser = FirebaseAuth.instance.currentUser;
   final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child("support_messages");
   final TextEditingController messageController = TextEditingController();
-
   List<Map<String, dynamic>> messages = [];
 
   @override
   void initState() {
     super.initState();
     listenToMessages();
+    saveUserInfo();
+  }
+
+  void saveUserInfo() {
+    if (currentUser != null) {
+      final userEmail = currentUser!.email ?? "No Email";
+      final userName = userEmail.split('@')[0];
+
+      messagesRef.child(currentUser!.uid).child("info").set({
+        "username": userName,
+        "email": userEmail,
+      });
+    }
   }
 
   void listenToMessages() {
-    messagesRef.child(currentUser!.uid).child("messages").onValue.listen((event) {
-      final data = event.snapshot.value as Map<dynamic, dynamic>? ?? {};
-      final loadedMessages = data.values
-          .map((msg) => Map<String, dynamic>.from(msg))
-          .toList();
-      setState(() {
-        messages = loadedMessages;
-      });
+    messagesRef
+        .child(currentUser!.uid)
+        .child("messages")
+        .orderByChild("timestamp")
+        .onValue
+        .listen((event) {
+      if (event.snapshot.value != null) {
+        final data = Map<dynamic, dynamic>.from(event.snapshot.value as Map);
+        final loadedMessages = data.values
+            .map((msg) => Map<String, dynamic>.from(msg))
+            .toList()
+          ..sort((a, b) => a['timestamp'].compareTo(b['timestamp']));
+
+        setState(() {
+          messages = loadedMessages;
+        });
+      }
     });
   }
 
   void sendMessage() {
     if (messageController.text.isEmpty) return;
+
     final message = {
       "message": messageController.text,
       "sender": "user",
-      "timestamp": DateTime.now().toIso8601String(),
+      "timestamp": DateTime.now().millisecondsSinceEpoch,
     };
+
     messagesRef.child(currentUser!.uid).child("messages").push().set(message);
     messageController.clear();
   }
@@ -55,13 +78,14 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
               itemBuilder: (context, index) {
                 final msg = messages[index];
                 final isUser = msg['sender'] == 'user';
+
                 return Align(
                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
-                    padding: EdgeInsets.all(10),
                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: isUser ? Colors.blue[100] : Colors.grey[300],
+                      color: isUser ? Colors.blue[100] : Colors.green[100],
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(msg['message']),
@@ -95,6 +119,796 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     );
   }
 }
+
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
+//
+// class HelpSupportScreen extends StatefulWidget {
+//   @override
+//   _HelpSupportScreenState createState() => _HelpSupportScreenState();
+// }
+//
+// class _HelpSupportScreenState extends State<HelpSupportScreen> {
+//   final User? currentUser = FirebaseAuth.instance.currentUser;
+//   final DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users");
+//   final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child("support_messages");
+//   final TextEditingController messageController = TextEditingController();
+//
+//   List<Map<String, dynamic>> messages = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     saveUserInfo();  // Save user information
+//     listenToMessages();
+//   }
+//
+//   void saveUserInfo() {
+//     if (currentUser != null) {
+//       final userEmail = currentUser!.email ?? "No Email";
+//       final userName = userEmail.split('@')[0];
+//
+//       usersRef.child(currentUser!.uid).set({
+//         "username": userName,
+//         "email": userEmail,
+//       });
+//     }
+//   }
+//
+//   void listenToMessages() {
+//     messagesRef.child(currentUser!.uid).child("messages").orderByChild("timestamp").onValue.listen((event) {
+//       final data = event.snapshot.value as Map<dynamic, dynamic>? ?? {};
+//       final loadedMessages = data.values
+//           .map((msg) => Map<String, dynamic>.from(msg))
+//           .toList()
+//         ..sort((a, b) => a['timestamp'].compareTo(b['timestamp'])); // Sort messages by timestamp
+//
+//       setState(() {
+//         messages = loadedMessages; // Update state with loaded messages
+//       });
+//     });
+//   }
+//
+//   void sendMessage() {
+//     if (messageController.text.isEmpty) return;
+//     final message = {
+//       "message": messageController.text,
+//       "sender": "user",
+//       "timestamp": DateTime.now().millisecondsSinceEpoch,
+//     };
+//
+//     messagesRef.child(currentUser!.uid).child("messages").push().set(message).then((_) {
+//       messageController.clear();
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Help & Support")),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: messages.length,
+//               itemBuilder: (context, index) {
+//                 final msg = messages[index];
+//                 final isUser = msg['sender'] == 'user';
+//                 return Align(
+//                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+//                   child: Container(
+//                     padding: EdgeInsets.all(10),
+//                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//                     decoration: BoxDecoration(
+//                       color: isUser ? Colors.blue[100] : Colors.green[100],
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                     child: Text(msg['message']),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: messageController,
+//                     decoration: InputDecoration(
+//                       hintText: "Type your message...",
+//                       border: OutlineInputBorder(),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send),
+//                   onPressed: sendMessage,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
+//
+// class HelpSupportScreen extends StatefulWidget {
+//   @override
+//   _HelpSupportScreenState createState() => _HelpSupportScreenState();
+// }
+//
+// class _HelpSupportScreenState extends State<HelpSupportScreen> {
+//   final User? currentUser = FirebaseAuth.instance.currentUser;
+//   final DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users");
+//   final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child("support_messages");
+//   final TextEditingController messageController = TextEditingController();
+//
+//   List<Map<String, dynamic>> messages = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     saveUserInfo(); // Save user information in Firebase.
+//     listenToMessages(); // Load chat messages.
+//   }
+//
+//   // Save user's name and email in Firebase under the "users" node.
+//   void saveUserInfo() {
+//     if (currentUser != null) {
+//       final userEmail = currentUser!.email ?? "No Email";
+//       final userName = userEmail.split('@')[0];
+//
+//       usersRef.child(currentUser!.uid).set({
+//         "username": userName,
+//         "email": userEmail,
+//       });
+//     }
+//   }
+//
+//   // Listen for incoming messages from Firebase and maintain order.
+//   void listenToMessages() {
+//     messagesRef
+//         .child(currentUser!.uid)
+//         .child("messages")
+//         .orderByChild("timestamp")
+//         .onValue
+//         .listen((event) {
+//       final data = event.snapshot.value as Map<dynamic, dynamic>? ?? {};
+//       final loadedMessages = data.values
+//           .map((msg) => Map<String, dynamic>.from(msg))
+//           .toList()
+//         ..sort((a, b) => a['timestamp'].compareTo(b['timestamp'])); // Sort by timestamp
+//
+//       setState(() {
+//         messages = loadedMessages;
+//       });
+//     });
+//   }
+//
+//   // Send a message to the admin.
+//   void sendMessage() {
+//     if (messageController.text.isEmpty) return;
+//     final message = {
+//       "message": messageController.text,
+//       "sender": "user",  // Identifies the sender as a user
+//       "timestamp": DateTime.now().millisecondsSinceEpoch, // Timestamp for ordering
+//     };
+//
+//     messagesRef.child(currentUser!.uid).child("messages").push().set(message);
+//     messageController.clear();
+//   }
+//
+//   // void sendMessage() {
+//   //   if (messageController.text.isEmpty) return;
+//   //   final message = {
+//   //     "message": messageController.text,
+//   //     "sender": "user",
+//   //     "timestamp": DateTime.now().millisecondsSinceEpoch, // Use timestamp for ordering.
+//   //   };
+//   //
+//   //   messagesRef.child(currentUser!.uid).child("messages").push().set(message);
+//   //   messageController.clear();
+//   // }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Help & Support")),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: messages.length,
+//               itemBuilder: (context, index) {
+//                 final msg = messages[index];
+//                 final isUser = msg['sender'] == 'user';
+//                 return Align(
+//                   alignment: isUser ? Alignment.centerLeft : Alignment.centerRight,
+//                   child: Container(
+//                     padding: EdgeInsets.all(10),
+//                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//                     decoration: BoxDecoration(
+//                       color: isUser ? Colors.blue[100] : Colors.green[100],
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                     child: Text(msg['message']),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: messageController,
+//                     decoration: InputDecoration(
+//                       hintText: "Type your message...",
+//                       border: OutlineInputBorder(),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send),
+//                   onPressed: sendMessage,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+//
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
+//
+// class HelpSupportScreen extends StatefulWidget {
+//   @override
+//   _HelpSupportScreenState createState() => _HelpSupportScreenState();
+// }
+//
+// class _HelpSupportScreenState extends State<HelpSupportScreen> {
+//   final User? currentUser = FirebaseAuth.instance.currentUser;
+//   final DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users");
+//   final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child("support_messages");
+//   final TextEditingController messageController = TextEditingController();
+//
+//   List<Map<String, dynamic>> messages = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     saveUserInfo();  // Save user information
+//     listenToMessages();
+//   }
+//
+//   // Save user's name and email in Firebase under the "users" node
+//   void saveUserInfo() {
+//     if (currentUser != null) {
+//       final userEmail = currentUser!.email ?? "No Email";
+//       final userName = userEmail.split('@')[0];
+//
+//       usersRef.child(currentUser!.uid).set({
+//         "username": userName,
+//         "email": userEmail,
+//       });
+//     }
+//   }
+//
+//   // Listen for incoming messages
+//   void listenToMessages() {
+//     messagesRef.child(currentUser!.uid).child("messages").onValue.listen((event) {
+//       final data = event.snapshot.value as Map<dynamic, dynamic>? ?? {};
+//       final loadedMessages = data.values
+//           .map((msg) => Map<String, dynamic>.from(msg))
+//           .toList();
+//       setState(() {
+//         messages = loadedMessages;
+//       });
+//     });
+//   }
+//
+//   // Send message to the admin
+//   void sendMessage() {
+//     if (messageController.text.isEmpty) return;
+//     final message = {
+//       "message": messageController.text,
+//       "sender": "user",
+//       "timestamp": DateTime.now().toIso8601String(),
+//     };
+//
+//     messagesRef.child(currentUser!.uid).child("messages").push().set(message);
+//     messageController.clear();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Help & Support")),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: messages.length,
+//               itemBuilder: (context, index) {
+//                 final msg = messages[index];
+//                 final isUser = msg['sender'] == 'user';
+//                 return Align(
+//                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+//                   child: Container(
+//                     padding: EdgeInsets.all(10),
+//                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//                     decoration: BoxDecoration(
+//                       color: isUser ? Colors.blue[100] : Colors.grey[300],
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                     child: Text(msg['message']),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: messageController,
+//                     decoration: InputDecoration(
+//                       hintText: "Type your message...",
+//                       border: OutlineInputBorder(),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send),
+//                   onPressed: sendMessage,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
+//
+// class HelpSupportScreen extends StatefulWidget {
+//   @override
+//   _HelpSupportScreenState createState() => _HelpSupportScreenState();
+// }
+//
+// class _HelpSupportScreenState extends State<HelpSupportScreen> {
+//   final User? currentUser = FirebaseAuth.instance.currentUser;
+//   final DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users");
+//   final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child("support_messages");
+//   final TextEditingController messageController = TextEditingController();
+//
+//   List<Map<String, dynamic>> messages = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     saveUserInfo();  // Save user information
+//     listenToMessages();
+//   }
+//
+//   // Save user's name and email in Firebase under the "users" node
+//   void saveUserInfo() {
+//     if (currentUser != null) {
+//       final userEmail = currentUser!.email ?? "No Email";
+//       final userName = userEmail.split('@')[0];
+//
+//       usersRef.child(currentUser!.uid).set({
+//         "username": userName,
+//         "email": userEmail,
+//       });
+//     }
+//   }
+//
+//   // Listen for incoming messages
+//   void listenToMessages() {
+//     messagesRef.child(currentUser!.uid).child("messages").onValue.listen((event) {
+//       final data = event.snapshot.value as Map<dynamic, dynamic>? ?? {};
+//       final loadedMessages = data.values
+//           .map((msg) => Map<String, dynamic>.from(msg))
+//           .toList();
+//       setState(() {
+//         messages = loadedMessages;
+//       });
+//     });
+//   }
+//
+//   // Send message to the admin
+//   void sendMessage() {
+//     if (messageController.text.isEmpty) return;
+//     final message = {
+//       "message": messageController.text,
+//       "sender": "user",
+//       "timestamp": DateTime.now().toIso8601String(),
+//     };
+//
+//     messagesRef.child(currentUser!.uid).child("messages").push().set(message);
+//     messageController.clear();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Help & Support")),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: messages.length,
+//               itemBuilder: (context, index) {
+//                 final msg = messages[index];
+//                 final isUser = msg['sender'] == 'user';
+//                 return Align(
+//                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+//                   child: Container(
+//                     padding: EdgeInsets.all(10),
+//                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//                     decoration: BoxDecoration(
+//                       color: isUser ? Colors.blue[100] : Colors.grey[300],
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                     child: Text(msg['message']),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: messageController,
+//                     decoration: InputDecoration(
+//                       hintText: "Type your message...",
+//                       border: OutlineInputBorder(),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send),
+//                   onPressed: sendMessage,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
+//
+// class HelpSupportScreen extends StatefulWidget {
+//   @override
+//   _HelpSupportScreenState createState() => _HelpSupportScreenState();
+// }
+//
+// class _HelpSupportScreenState extends State<HelpSupportScreen> {
+//   final User? currentUser = FirebaseAuth.instance.currentUser;
+//   final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child("support_messages");
+//   final TextEditingController messageController = TextEditingController();
+//
+//   List<Map<String, dynamic>> messages = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     listenToMessages();
+//   }
+//
+//   void listenToMessages() {
+//     messagesRef.child(currentUser!.uid).child("messages").onValue.listen((event) {
+//       final data = event.snapshot.value as Map<dynamic, dynamic>? ?? {};
+//       final loadedMessages = data.values
+//           .map((msg) => Map<String, dynamic>.from(msg))
+//           .toList();
+//       setState(() {
+//         messages = loadedMessages;
+//       });
+//     });
+//   }
+//
+//   void sendMessage() {
+//     if (messageController.text.isEmpty) return;
+//
+//     // Extract user data
+//     final String userEmail = currentUser!.email ?? 'No Email';
+//     final String userName = userEmail.split('@')[0]; // Extract name from email
+//
+//     final message = {
+//       "message": messageController.text,
+//       "sender": "user",
+//       "email": userEmail,
+//       "username": userName,
+//       "timestamp": DateTime.now().toIso8601String(),
+//     };
+//
+//     messagesRef.child(currentUser!.uid).child("messages").push().set(message);
+//     messageController.clear();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Help & Support")),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: messages.length,
+//               itemBuilder: (context, index) {
+//                 final msg = messages[index];
+//                 final isUser = msg['sender'] == 'user';
+//                 return Align(
+//                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+//                   child: Container(
+//                     padding: EdgeInsets.all(10),
+//                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//                     decoration: BoxDecoration(
+//                       color: isUser ? Colors.blue[100] : Colors.grey[300],
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                     child: Text(msg['message']),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: messageController,
+//                     decoration: InputDecoration(
+//                       hintText: "Type your message...",
+//                       border: OutlineInputBorder(),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send),
+//                   onPressed: sendMessage,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
+//
+// class HelpSupportScreen extends StatefulWidget {
+//   @override
+//   _HelpSupportScreenState createState() => _HelpSupportScreenState();
+// }
+//
+// class _HelpSupportScreenState extends State<HelpSupportScreen> {
+//   final User? currentUser = FirebaseAuth.instance.currentUser;
+//   final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child("support_messages");
+//   final TextEditingController messageController = TextEditingController();
+//
+//   List<Map<String, dynamic>> messages = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     listenToMessages();
+//   }
+//
+//   void listenToMessages() {
+//     messagesRef.child(currentUser!.uid).child("messages").onValue.listen((event) {
+//       final data = event.snapshot.value as Map<dynamic, dynamic>? ?? {};
+//       final loadedMessages = data.values
+//           .map((msg) => Map<String, dynamic>.from(msg))
+//           .toList();
+//       setState(() {
+//         messages = loadedMessages;
+//       });
+//     });
+//   }
+//
+//   void sendMessage() {
+//     if (messageController.text.isEmpty) return;
+//
+//     final message = {
+//       "message": messageController.text,
+//       "sender": "user",
+//       "email": currentUser!.email,
+//       "username": currentUser!.displayName ?? 'Unknown User',
+//       "timestamp": DateTime.now().toIso8601String(),
+//     };
+//
+//     messagesRef.child(currentUser!.uid).child("messages").push().set(message);
+//     messageController.clear();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Help & Support")),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: messages.length,
+//               itemBuilder: (context, index) {
+//                 final msg = messages[index];
+//                 final isUser = msg['sender'] == 'user';
+//                 return Align(
+//                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+//                   child: Container(
+//                     padding: EdgeInsets.all(10),
+//                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//                     decoration: BoxDecoration(
+//                       color: isUser ? Colors.blue[100] : Colors.grey[300],
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                     child: Text(msg['message']),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: messageController,
+//                     decoration: InputDecoration(
+//                       hintText: "Type your message...",
+//                       border: OutlineInputBorder(),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send),
+//                   onPressed: sendMessage,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
+//
+// class HelpSupportScreen extends StatefulWidget {
+//   @override
+//   _HelpSupportScreenState createState() => _HelpSupportScreenState();
+// }
+//
+// class _HelpSupportScreenState extends State<HelpSupportScreen> {
+//   final User? currentUser = FirebaseAuth.instance.currentUser;
+//   final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child("support_messages");
+//   final TextEditingController messageController = TextEditingController();
+//
+//   List<Map<String, dynamic>> messages = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     listenToMessages();
+//   }
+//
+//   void listenToMessages() {
+//     messagesRef.child(currentUser!.uid).child("messages").onValue.listen((event) {
+//       final data = event.snapshot.value as Map<dynamic, dynamic>? ?? {};
+//       final loadedMessages = data.values
+//           .map((msg) => Map<String, dynamic>.from(msg))
+//           .toList();
+//       setState(() {
+//         messages = loadedMessages;
+//       });
+//     });
+//   }
+//
+//   void sendMessage() {
+//     if (messageController.text.isEmpty) return;
+//     final message = {
+//       "message": messageController.text,
+//       "sender": "user",
+//       "timestamp": DateTime.now().toIso8601String(),
+//     };
+//     messagesRef.child(currentUser!.uid).child("messages").push().set(message);
+//     messageController.clear();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Help & Support")),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: messages.length,
+//               itemBuilder: (context, index) {
+//                 final msg = messages[index];
+//                 final isUser = msg['sender'] == 'user';
+//                 return Align(
+//                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+//                   child: Container(
+//                     padding: EdgeInsets.all(10),
+//                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//                     decoration: BoxDecoration(
+//                       color: isUser ? Colors.blue[100] : Colors.grey[300],
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                     child: Text(msg['message']),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: messageController,
+//                     decoration: InputDecoration(
+//                       hintText: "Type your message...",
+//                       border: OutlineInputBorder(),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send),
+//                   onPressed: sendMessage,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 // import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';

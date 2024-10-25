@@ -53,9 +53,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: Text('Admin Panel - Send Notification'),
-        backgroundColor: Colors.teal,
+        title: Text('Send Notification'),
+
       ),
       body: Center(
         child: Padding(
@@ -82,14 +83,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.teal,
+                    color: Colors.black,
                   ),
                 ),
                 SizedBox(height: 20),
                 TextField(
                   controller: _titleController,
                   decoration: InputDecoration(
-                    labelText: 'Notification Title',
+                    labelText: 'Notification Title',labelStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -99,7 +100,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 TextField(
                   controller: _messageController,
                   decoration: InputDecoration(
-                    labelText: 'Notification Message',
+                    labelText: 'Notification Message',labelStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -110,7 +111,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ElevatedButton(
                   onPressed: () => sendNotification(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
+                    backgroundColor: Colors.indigo,
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),

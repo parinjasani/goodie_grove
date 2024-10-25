@@ -152,7 +152,7 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
                 Text(
                   widget.goodies.productname ?? 'Unknown Product',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
                   ),
@@ -163,7 +163,8 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
                   'Credits: ${widget.goodies.credits ?? 0}',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.white,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600
                   ),
                 ),
                 SizedBox(height: 17),
@@ -171,8 +172,9 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
                 Text(
                   widget.goodies.details ?? 'No details available',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 19,
+                    fontWeight: FontWeight.w500
                   ),
                 ),
                 SizedBox(height: 80),

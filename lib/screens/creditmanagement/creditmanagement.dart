@@ -48,8 +48,9 @@ class _CreditManagementState extends State<CreditManagement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: Text('Credit Management'),
+        title: Text('User Management'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -57,58 +58,83 @@ class _CreditManagementState extends State<CreditManagement> {
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
-                controller: emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter email';
-                  }
-                  return null;
-                },
+              Container( decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  color: Colors.white),
+                child: TextFormField(cursorColor: Colors.white,
+                  controller: emailController,
+                  decoration: InputDecoration(labelText: 'Email',labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter email';
+                    }
+                    return null;
+                  },
+                ),
               ),
               SizedBox(height: 15),
-              TextFormField(
-                controller: passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter password';
-                  }
-                  if (value.length < 6) {
-                    return 'Password must be at least 6 characters';
-                  }
-                  return null;
-                },
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.white),
+                child: TextFormField(style: TextStyle(color: Colors.black),
+
+                  controller: passwordController,
+                  decoration: InputDecoration(labelText: 'Password',labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter password';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+                    return null;
+                  },
+                ),
               ),
               SizedBox(height: 15),
-              TextFormField(
-                controller: usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.white),
+                child: TextFormField(
+                  controller: usernameController,
+                  decoration: InputDecoration(labelText: 'Username',labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
+                ),
               ),
               SizedBox(height: 15),
-              TextFormField(
-                controller: profilePicUrlController,
-                decoration: InputDecoration(labelText: 'Profile Picture URL'),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.white),
+                child: TextFormField(
+                  controller: profilePicUrlController,
+                  decoration: InputDecoration(labelText: 'Profile Picture URL',labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
+                ),
               ),
               SizedBox(height: 15),
-              TextFormField(
-                controller: creditController,
-                decoration: InputDecoration(labelText: 'Credit'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter credit';
-                  }
-                  if (int.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
-                },
+              Container( decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  color: Colors.white),
+                child: TextFormField(
+                  controller: creditController,
+                  decoration: InputDecoration(labelText: 'Credit',labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter credit';
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'Please enter a valid number';
+                    }
+                    return null;
+                  },
+                ),
               ),
               SizedBox(height: 20),
               MaterialButton(
+                child: Text("Add",style: TextStyle(color: Colors.white)),
                 minWidth: 20.h,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
@@ -116,7 +142,7 @@ class _CreditManagementState extends State<CreditManagement> {
                 onPressed: () {
                   _register();
                 },
-                color: Colors.black,
+                color: Colors.indigo,
               )
             ],
           ),

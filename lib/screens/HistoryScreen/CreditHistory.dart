@@ -19,28 +19,26 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Future<void> fetchHistory() async {
-    final DatabaseReference historyRef =
-    FirebaseDatabase.instance.ref().child("history");
+    final DatabaseReference historyRef = FirebaseDatabase.instance.ref().child("history");
 
+    // Fetch records filtered by email and sorted by timestamp
     final snapshot = await historyRef
         .orderByChild("email")
         .equalTo(currentUser!.email)
         .once();
 
     if (snapshot.snapshot.value != null) {
-      // Clear the list to avoid duplicates
-      redemptionHistory.clear();
-
       final data = Map<String, dynamic>.from(snapshot.snapshot.value as Map);
 
-      // Extract and sort by 'redeemedAt' timestamp (most recent first)
       data.forEach((key, value) {
         redemptionHistory.add(Map<String, dynamic>.from(value));
       });
 
+      // Sort the list in descending order by 'redeemedAt'
       redemptionHistory.sort((a, b) {
-        return DateTime.parse(b['redeemedAt'])
-            .compareTo(DateTime.parse(a['redeemedAt']));
+        DateTime timeA = DateTime.parse(a['redeemedAt']);
+        DateTime timeB = DateTime.parse(b['redeemedAt']);
+        return timeB.compareTo(timeA); // Descending order
       });
 
       setState(() {});
@@ -59,29 +57,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
         itemCount: redemptionHistory.length,
         itemBuilder: (context, index) {
           final history = redemptionHistory[index];
-
-          return ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.network(
-                history['productImageUrl'] ??
-                    'https://via.placeholder.com/50', // Default placeholder
-                height: 50,
-                width: 50,
-                fit: BoxFit.cover,
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ListTile(
+                title: Text(
+                  history['productName'],
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  'Credits Used: ${history['creditsUsed']}',
+                  style: TextStyle(color: Colors.black),
+                ),
+                trailing: Text(
+                  history['redeemedAt'] != null
+                      ? DateTime.parse(history['redeemedAt'])
+                      .toLocal()
+                      .toString()
+                      : 'Unknown time',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
-            title: Text(
-              history['productName'] ?? 'Unknown Product',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text('Credits Used: ${history['creditsUsed']}'),
-            trailing: Text(
-              history['redeemedAt'] != null
-                  ? DateTime.parse(history['redeemedAt'])
-                  .toLocal()
-                  .toString()
-                  : 'Unknown time',
             ),
           );
         },
@@ -90,7 +89,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 }
 
-
+//
+//
 // import 'package:flutter/material.dart';
 // import 'package:firebase_database/firebase_database.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -137,13 +137,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
 //         itemCount: redemptionHistory.length,
 //         itemBuilder: (context, index) {
 //           final history = redemptionHistory[index];
-//           return ListTile(
-//             title: Text(history['productName']),
-//             subtitle: Text('Credits Used: ${history['creditsUsed']}'),
-//             trailing: Text(
-//               history['redeemedAt'] != null
-//                   ? DateTime.parse(history['redeemedAt']).toLocal().toString()
-//                   : 'Unknown time',
+//           return Card(
+//             child: Padding(
+//               padding: const EdgeInsets.all(12.0),
+//               child: ListTile(
+//                 title: Text(history['productName'],style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
+//                 subtitle: Text('Credits Used: ${history['creditsUsed']}',style: TextStyle(color: Colors.black)),
+//                 trailing: Text(
+//                   history['redeemedAt'] != null
+//                       ? DateTime.parse(history['redeemedAt']).toLocal().toString()
+//                       : 'Unknown time',
+//                 style: TextStyle(color: Colors.black)),
+//               ),
 //             ),
 //           );
 //

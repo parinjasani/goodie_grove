@@ -16,6 +16,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   FirebaseSingleton _service = FirebaseSingleton();
   User? currentUser;
   Employee? employee;
+  String initialLetter = "U";
   bool isLoading = true; // Track loading state
 
   @override
@@ -36,7 +37,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print("Employee not found for email: ${currentUser!.email!}");
     }
     setState(() {
-      isLoading = false; // Fetching done, stop loading
+      isLoading = false;
+      setState(() {
+        initialLetter = (( employee?.username!= null && employee!.username!.isEmpty)
+            ? employee?.username![0].toUpperCase() // First letter of the displayName
+            : employee?.email != null && employee!.email!.isNotEmpty
+            ? currentUser!.email![0].toUpperCase() // First letter of the email
+            : "U")!; // Default if no email or name is found
+      });
+      // Fetching done, stop loading
     });
   }
 
@@ -57,14 +66,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Center(
               child: CircleAvatar(
                 radius: 50,
-                backgroundColor: Colors.black,
+                backgroundColor: Colors.black38.withOpacity(0.2),
 
-                backgroundImage: (employee?.profilepicurl != null && employee!.profilepicurl!.isNotEmpty)
-                    ? NetworkImage(employee!.profilepicurl!)
-                    : null,
-                child: (employee?.profilepicurl == null || employee!.profilepicurl!.isEmpty)
-                    ? Text(
-                  currentUser?.email![0].toUpperCase() ?? 'U', // Show initial letter or 'U'
+                // backgroundImage: (employee?.profilepicurl != null && employee!.profilepicurl!.isNotEmpty)
+                //     ? NetworkImage(employee!.profilepicurl!)
+                //     : null,
+                child: //(employee?.profilepicurl == null || employee!.profilepicurl!.isEmpty) ?
+                     Text(initialLetter,
+                  //currentUser?.email![0].toUpperCase() ?? 'A', // Show initial letter or 'U'
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 40,
@@ -72,69 +81,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   ),
                 )
-                    : null,
+
               ),
             ),
             SizedBox(height: 16),
             Center(
               child: Text(
                 employee?.username ?? currentUser!.email!,
-                style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 24),
+                style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 24),
               ),
             ),
             SizedBox(height: 10),
             Center(
               child: Text(
                 employee?.email ?? currentUser!.email!,
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
             ),
             SizedBox(height: 20),
-            Divider(),
+            Divider(color: Colors.black,thickness: 1.5),
             ListTile(
-              leading: Icon(Icons.credit_card),
-              title: Text("Credits"),
+              leading: Icon(Icons.credit_card,color: Colors.black),
+              title: Text("Credits", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+              ),
               trailing: Text(
                 employee?.credit?.toString() ?? '0',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
               ),
             ),
-            Divider(),
+            Divider(color: Colors.black,thickness: 1.5),
             ListTile(
               onTap: () {
                 //Navigator.pushNamed(context, Approutes.historyscreen); // Route to History
                 Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryScreen(),));
               },
-              title: Text("History"),
-              leading: Icon(Icons.book),
+              title: Text("History",                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+              ),
+              leading: Icon(Icons.book,color: Colors.black),
             ),
-            Divider(color: Colors.grey),
+            Divider(color: Colors.black,thickness: 1.5),
             ListTile(
               onTap: () {
                 Navigator.pushNamed(context, Approutes.settingscreen); // Route to Settings
               },
-              title: Text("Settings"),
-              leading: Icon(Icons.settings),
+              title: Text("Settings",                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+              ),
+              leading: Icon(Icons.settings,color: Colors.black),
             ),
 
 
-            Divider(color: Colors.grey),
+            Divider(color: Colors.black,thickness: 1.5),
             ListTile(
               onTap: () {
                 Navigator.pushNamed(context, Approutes.helpsupportscreen); // Route to Help & Support
               },
-              title: Text("Help & Support"),
-              leading: Icon(Icons.help_outline_rounded),
+              title: Text("Help & Support",                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+              ),
+              leading: Icon(Icons.help_outline_rounded,color: Colors.black),
             ),
-            Divider(color: Colors.grey),
+            Divider(color: Colors.black,thickness: 1.5),
             ListTile(
-              title: Text("Logout"),
-              leading: Icon(Icons.logout),
+              title: Text("Logout",                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+              ),
+              leading: Icon(Icons.logout,color: Colors.black),
               onTap: () {
                 _service.logout().then((value) => Navigator.restorablePushNamedAndRemoveUntil(
                     context, Approutes.signinscreen, (route) => false));
               },
             ),
+            Divider(color: Colors.black,thickness: 1.5),
           ],
         ),
       ),
